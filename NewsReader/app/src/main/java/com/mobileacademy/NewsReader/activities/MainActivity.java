@@ -1,7 +1,12 @@
 package com.mobileacademy.NewsReader.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,19 +18,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.mobileacademy.NewsReader.data.CachedData;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.NewsReader.services.ListPackagesService;
+import com.mobileacademy.NewsReader.services.CounterService;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
+    private static String TAG = MainActivity.class.getSimpleName();
+    public static String BROADCAST_ACTION = "TimeIsUp";
+
     private ArrayList<Publication> list;
     private PublicationListAdapter adapter;
+    private BroadcastReceiver countDownReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "BroadcastReceived");
+            Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +62,17 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         list = CachedData.getInstance().getPublicationsAsList();
+
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(countDownReceiver, intentFilter);
         setupGridView();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
     }
 
     private void setupGridView() {
@@ -94,9 +121,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.item_count) {
+            Intent service = new Intent(this, CounterService.class);
+            service.setAction(CounterService.ACTION_COUNT);
+            this.startService(service);
+        } else if (id == R.id.item_package_list) {
+            Intent service = new Intent(this, ListPackagesService.class);
+            this.startService(service);
 
         } else if (id == R.id.nav_slideshow) {
 
