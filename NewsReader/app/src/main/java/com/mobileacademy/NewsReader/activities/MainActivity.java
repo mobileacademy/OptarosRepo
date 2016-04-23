@@ -18,6 +18,8 @@ import com.mobileacademy.NewsReader.data.CachedData;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.NewsReader.services.ListPackagesService;
+import com.mobileacademy.NewsReader.services.CounterService;
 
 import java.util.ArrayList;
 
@@ -94,9 +96,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.item_count) {
+            Intent service = new Intent(this, CounterService.class);
+            service.setAction(CounterService.ACTION_COUNT);
+            this.startService(service);
+        } else if (id == R.id.item_package_list) {
+            Intent service = new Intent(this, ListPackagesService.class);
+            this.startService(service);
 
         } else if (id == R.id.nav_slideshow) {
 

@@ -19,6 +19,22 @@
             </intent-filter>
         </activity>
         <activity android:name="com.mobileacademy.NewsReader.activities.ArticleListActivity"></activity>
+
+
+        <receiver android:name="receivers.PackageInstalledReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!--services-->
+        <service android:name=".services.CounterService"
+            android:exported="false"/>
+
+        <service android:name=".services.ListPackagesService"
+            android:exported="false"/>
     </application>
 
 </manifest>
