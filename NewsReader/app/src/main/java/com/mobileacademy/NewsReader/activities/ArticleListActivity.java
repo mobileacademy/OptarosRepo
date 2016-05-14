@@ -48,7 +48,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
 
             if(publicationId != -1) {
                 // get articles from db by publication id
-                 articleList = (ArrayList) NewsReaderApplication.getInstance().getDatasource().getAllArticlesByPublication(publicationId);
+                articleList = (ArrayList) NewsReaderApplication.getInstance().getDatasource().getAllArticlesByPublication(publicationId);
                 Log.d(TAG, "articles size: " + articleList.size());
 
                 ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, articleList);
@@ -57,7 +57,6 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
                 listView.setOnItemClickListener(this);
 
             }
-//            renderArticleList(publicationName);
         }else{
             Log.e(TAG, "The publication id should have been passed in the intent");
             //finish the activity
@@ -65,22 +64,6 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
             return;
         }
 
-    }
-
-    /**
-     * Method for rendering the list of articles for a given publication.
-     * <p>The list of articles is took from the {@link CachedData} singleton</>
-     * <p>The adapter will use {@link Article#toString()} method to get the name of the articles it
-     * needs to display in the ListView </>
-     * @param publicationName
-     */
-    private void renderArticleList(String publicationName) {
-
-        articleList = CachedData.getInstance().getArticleListForPublication(publicationName);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, articleList);
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
     }
 
     @Override

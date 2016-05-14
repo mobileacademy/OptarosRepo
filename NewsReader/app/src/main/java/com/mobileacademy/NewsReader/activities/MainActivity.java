@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mySharedPref = new AppSharedPref(this);
-        mySharedPref.addStringToSharePref(KEY_NAME, "Valerica Plesu");
-
         // inflate activity toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // set the Toolbar to act as the ActionBar

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobileacademy.NewsReader">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".NewsReaderApplication"
         android:allowBackup="true"
@@ -42,6 +44,12 @@
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
 
                 <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.WifiConnectedReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
 
