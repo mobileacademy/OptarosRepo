@@ -49,9 +49,6 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        listView = (ListView) findViewById(R.id.lv_articles);
-
-
         Intent i = getIntent();
 
         String publicationName;
@@ -63,6 +60,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
             if (publicationId != -1) {
                 // get articles from db by publication id
                 //articleList = (ArrayList) NewsReaderApplication.getInstance().getDatasource().getAllArticlesByPublication(publicationId);
+                listView = (ListView) findViewById(R.id.lv_articles);
                 loadArticlesFromServer(publicationName);
             }
         } else {
@@ -84,8 +82,8 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
         listView.setOnItemClickListener(this);
     }
 
-    private void loadArticlesFromServer(String publicationId) {
-        switch (publicationId) {
+    private void loadArticlesFromServer(String publicationName) {
+        switch (publicationName) {
             case MockDataHandler.HACKER_NEWS:
                 retrieveByUrl(HackerNewsApi.TOP_STORIES_ENDPOINT);
                 return;
@@ -93,7 +91,6 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
                 retrieveByUrl(HackerNewsApi.NEW_STORIES_ENDPOINT);
                 return;
             default:
-                new ArrayList<>();
                 return;
         }
     }
@@ -133,12 +130,13 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onFailure(Call call, IOException e) {
         Log.e(TAG, "failed to retrieve data", e);
+        finish();
     }
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         String articleListJson = response.body().string();
-        Log.d(TAG, "YEEEEEY " + articleListJson);
+        Log.d(TAG, "Received articles array " + articleListJson);
 
         new LoadArticlesAsync().execute(articleListJson);
 

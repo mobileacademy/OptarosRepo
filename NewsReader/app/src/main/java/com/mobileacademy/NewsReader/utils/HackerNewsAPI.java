@@ -26,8 +26,6 @@ public class HackerNewsApi {
         return ITEM_ENDPOINT + id + ".json";
     }
 
-    //no need for JSON_TYPE right now buuuut we might need it in the future
-    private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=urf-8");
     private static OkHttpClient httpClientInstance;
 
     static OkHttpClient getInstance() {
@@ -54,9 +52,11 @@ public class HackerNewsApi {
     }
 
     /**
+     * @param callback - callback which will be used when the call is done
      * @param url is the url to which the call needs to be made
      *            http operation is GET
      *            in case of failures we either throw an exception or return null
+     *
      */
     public static void retrieveStories(String url, Callback callback) throws IOException {
 
