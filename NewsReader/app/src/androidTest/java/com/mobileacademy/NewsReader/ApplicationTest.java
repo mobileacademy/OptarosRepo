@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader;
+package com.mobileacademy.newsReader;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

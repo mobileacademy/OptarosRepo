@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader.models;
+package com.mobileacademy.newsReader.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;

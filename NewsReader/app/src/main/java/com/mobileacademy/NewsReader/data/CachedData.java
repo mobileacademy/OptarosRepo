@@ -1,12 +1,11 @@
-package com.mobileacademy.NewsReader.data;
+package com.mobileacademy.newsReader.data;
 
 import android.util.Log;
 
-import com.mobileacademy.NewsReader.NewsReaderApplication;
-import com.mobileacademy.NewsReader.R;
-import com.mobileacademy.NewsReader.database.ArticlesDataSource;
-import com.mobileacademy.NewsReader.models.Article;
-import com.mobileacademy.NewsReader.models.Publication;
+import com.mobileacademy.newsReader.NewsReaderApplication;
+import com.mobileacademy.newsReader.R;
+import com.mobileacademy.newsReader.models.Article;
+import com.mobileacademy.newsReader.models.Publication;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader.models;
+package com.mobileacademy.newsReader.models;
 
 /**
  * Created by danielastamati on 21/04/16.

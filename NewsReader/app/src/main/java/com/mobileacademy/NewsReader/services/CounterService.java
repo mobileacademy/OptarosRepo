@@ -1,16 +1,15 @@
-package com.mobileacademy.NewsReader.services;
+package com.mobileacademy.newsReader.services;
 
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mobileacademy.NewsReader.activities.MainActivity;
+import com.mobileacademy.newsReader.activities.MainActivity;
 
 /**
  * Created by cornelbalaban on 29/03/16.

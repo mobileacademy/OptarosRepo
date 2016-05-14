@@ -1,14 +1,13 @@
-package com.mobileacademy.NewsReader.receivers;
+package com.mobileacademy.newsReader.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.mobileacademy.NewsReader.utils.AppSharedPref;
+import com.mobileacademy.newsReader.utils.AppSharedPref;
 
 /**
  * Created by danielastamati on 14/05/16.

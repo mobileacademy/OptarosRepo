@@ -1,17 +1,18 @@
-package com.mobileacademy.NewsReader.activities;
+package com.mobileacademy.newsReader.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,19 +29,21 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mobileacademy.NewsReader.data.CachedData;
-import com.mobileacademy.NewsReader.models.Publication;
-import com.mobileacademy.NewsReader.R;
-import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
-import com.mobileacademy.NewsReader.services.ListPackagesService;
-import com.mobileacademy.NewsReader.services.CounterService;
-import com.mobileacademy.NewsReader.utils.AppSharedPref;
-import com.mobileacademy.NewsReader.utils.NotifUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.mobileacademy.newsReader.data.CachedData;
+import com.mobileacademy.newsReader.models.Publication;
+import com.mobileacademy.newsReader.R;
+import com.mobileacademy.newsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.newsReader.services.ListPackagesService;
+import com.mobileacademy.newsReader.services.CounterService;
+import com.mobileacademy.newsReader.services.MyTaskService;
+import com.mobileacademy.newsReader.services.RegistrationGCMIntentService;
+import com.mobileacademy.newsReader.utils.AppSharedPref;
+import com.mobileacademy.newsReader.utils.NotifUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity
     private static final int PICK_IMAGE_REQUEST = 109;
     private static final int GO_TO_PUBLICATION_REQUEST = 110;
 
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     private ArrayList<Publication> list;
     private PublicationListAdapter adapter;
     private BroadcastReceiver countDownReceiver = new BroadcastReceiver() {
@@ -72,6 +77,10 @@ public class MainActivity extends AppCompatActivity
 
     private AppSharedPref mySharedPref;
     private String selectedArticleTitle;
+
+    private boolean isReceiverRegistered;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +151,79 @@ public class MainActivity extends AppCompatActivity
         LocalBroadcastManager.getInstance(this).registerReceiver(countDownReceiver, intentFilter);
         setupGridView();
 
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "mRegistrationBroadcastReceiver - onReceive");
+                if (intent.getAction().equals(MyTaskService.ACTION_DONE)) {
+
+                    String tag = intent.getStringExtra(MyTaskService.EXTRA_TAG);
+                    int result = intent.getIntExtra(MyTaskService.EXTRA_RESULT, -1);
+
+                    String msg = String.format("DONE: %s (%d)", tag, result);
+                    Log.d(TAG, "msg: " + msg);
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    boolean sentToken = sharedPreferences
+                            .getBoolean(RegistrationGCMIntentService.SENT_TOKEN_TO_SERVER, false);
+                    if (sentToken) {
+                        Log.d(TAG, "token sent!");
+                    } else {
+                        Log.d(TAG, "token not sent!");
+                    }
+                }
+            }
+        };
+
+        // Registering BroadcastReceiver
+        registerReceiver();
+
+        if (checkPlayServices()) {
+            Log.d(TAG, "playservices OK - start RegistrationGCMIntentService!");
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationGCMIntentService.class);
+            startService(intent);
+        }
+
+        MyTaskService.startChargingTask(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+        super.onPause();
+    }
+
+    private void registerReceiver(){
+
+        IntentFilter myTaskServiceFilter = new IntentFilter();
+        myTaskServiceFilter.addAction(MyTaskService.ACTION_DONE);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                myTaskServiceFilter);
+
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(RegistrationGCMIntentService.REG_COMPLETE_ACTION));
+            isReceiverRegistered = true;
+        }
     }
 
     private void setupGridView() {
@@ -317,5 +393,26 @@ public class MainActivity extends AppCompatActivity
                 startActivity(sendIntent);
             }
         }
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

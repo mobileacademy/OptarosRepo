@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader.services;
+package com.mobileacademy.newsReader.services;
 
 import android.app.IntentService;
 import android.content.Intent;

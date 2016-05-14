@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader.utils;
+package com.mobileacademy.newsReader.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
