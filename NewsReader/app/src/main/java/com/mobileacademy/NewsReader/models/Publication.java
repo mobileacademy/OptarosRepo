@@ -8,12 +8,13 @@ import java.util.ArrayList;
  */
 public class Publication implements Serializable {
 
-
+    private int id;
     private String name;
     private int pictureResource;
     private ArrayList<Article> articleList;
 
-    public Publication(String name, int pictureResource) {
+    public Publication(int id, String name, int pictureResource) {
+        this.id = id;
         this.name = name;
         this.pictureResource = pictureResource;
 
@@ -41,5 +42,13 @@ public class Publication implements Serializable {
 
     public void setPictureResource(int pictureResource) {
         this.pictureResource = pictureResource;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
