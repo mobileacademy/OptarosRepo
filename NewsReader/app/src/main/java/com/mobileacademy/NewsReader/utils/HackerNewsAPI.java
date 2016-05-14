@@ -1,44 +1,68 @@
 package com.mobileacademy.NewsReader.utils;
 
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * Created by cornelbalaban on 06/04/16.
  */
-public final class HackerNewsAPI {
+public class HackerNewsApi {
 
-    private static final String BASE_ENDPOINT= "https://hacker-news.firebaseio.com/v0/";
-    private static final String TOP_STORIES_ENDPOINT= BASE_ENDPOINT + "topstories.json";
-    private static final String NEW_STORIES_ENDPOINT= BASE_ENDPOINT + "newstories.json";
-    private static final String ITEM_ENDPOINT= BASE_ENDPOINT + "item/";
+    private static final String TAG = HackerNewsApi.class.getSimpleName();
 
+    public static final String BASE_ENDPOINT = "https://hacker-news.firebaseio.com/v0/";
+    public static final String TOP_STORIES_ENDPOINT = BASE_ENDPOINT + "topstories.json";
+    public static final String NEW_STORIES_ENDPOINT = BASE_ENDPOINT + "newstories.json";
+    public static final String ITEM_ENDPOINT = BASE_ENDPOINT + "item/";
 
-    /**
-     *
-     * @param urlPurpose is the url that should be returned: topStories, newStories
-     * @return  URLs or the BASE URL as default
-     */
-    public static String getEndpointUrl(String urlPurpose) {
-
-        String returnUrl;
-
-        switch (urlPurpose) {
-            case "topStories":
-                returnUrl =  TOP_STORIES_ENDPOINT;
-                break;
-            case "newStories":
-                returnUrl = NEW_STORIES_ENDPOINT;
-                break;
-//            case "itemDescription":
-//                returnUrl = ITEM_ENDPOINT;
-//                break;
-            default:
-                returnUrl = BASE_ENDPOINT;
-                break;
-        }
-        return returnUrl;
+    public static String getArticleById(String id) {
+        return ITEM_ENDPOINT + id + ".json";
     }
 
-    public static String getItemUrl (String id)
-    {
-        return ITEM_ENDPOINT + id + ".json";
+    //no need for JSON_TYPE right now buuuut we might need it in the future
+    private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=urf-8");
+    private static OkHttpClient httpClientInstance;
+
+    static OkHttpClient getInstance() {
+
+        if (httpClientInstance == null) {
+            httpClientInstance = new OkHttpClient();
+        }
+
+        return httpClientInstance;
+    }
+
+    /**
+     * @param url is the url to which the call needs to be made
+     *            http operation is GET
+     *            in case of failures we either throw an exception or return null
+     */
+    public static String retrieveStories(String url) throws IOException {
+
+        Request getRequest = new Request.Builder()
+                .url(url)
+                .build();
+        Response getResponse = getInstance().newCall(getRequest).execute();
+        return getResponse.body().string();
+    }
+
+    /**
+     * @param url is the url to which the call needs to be made
+     *            http operation is GET
+     *            in case of failures we either throw an exception or return null
+     */
+    public static void retrieveStories(String url, Callback callback) throws IOException {
+
+        Request getRequest = new Request.Builder()
+                .url(url)
+                .build();
+        getInstance().newCall(getRequest).enqueue(callback);
     }
 }

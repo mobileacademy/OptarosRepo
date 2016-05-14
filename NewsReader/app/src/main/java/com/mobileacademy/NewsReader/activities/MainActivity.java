@@ -11,7 +11,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,12 +27,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.data.MockDataHandler;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
@@ -136,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 //        addProgramaticalyItemsToDrawerView();
 
 
-        list = CachedData.getInstance().getPublicationsAsList();
+        list = MockDataHandler.getInstance().getPublicationsAsList();
 
         IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(countDownReceiver, intentFilter);

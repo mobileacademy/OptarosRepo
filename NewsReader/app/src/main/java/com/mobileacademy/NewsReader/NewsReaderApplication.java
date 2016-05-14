@@ -3,7 +3,6 @@ package com.mobileacademy.NewsReader;
 import android.app.Application;
 import android.util.Log;
 
-import com.mobileacademy.NewsReader.data.CachedData;
 import com.mobileacademy.NewsReader.database.ArticlesDataSource;
 
 /**
@@ -33,9 +32,6 @@ public class NewsReaderApplication extends Application {
 
         // open database
         datasource.open();
-
-        // insert dummy data into Article table
-        CachedData.getInstance().insertArticleDummyContentToDb();
 
     }
 
