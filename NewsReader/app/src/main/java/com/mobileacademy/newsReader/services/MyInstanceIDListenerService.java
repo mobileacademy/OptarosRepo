@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mobileacademy.newsReader.services;
+package com.mobileacademy.NewsReader.services;
 
 import android.content.Intent;
 import android.util.Log;

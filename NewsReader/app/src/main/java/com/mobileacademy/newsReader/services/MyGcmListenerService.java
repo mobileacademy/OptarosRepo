@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mobileacademy.newsReader.services;
+package com.mobileacademy.NewsReader.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,8 +27,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.mobileacademy.newsReader.R;
-import com.mobileacademy.newsReader.activities.MainActivity;
+import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.activities.MainActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
 

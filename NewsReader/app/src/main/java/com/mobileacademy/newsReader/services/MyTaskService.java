@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.services;
+package com.mobileacademy.NewsReader.services;
 
 /*
  * Copyright Google Inc. All Rights Reserved.

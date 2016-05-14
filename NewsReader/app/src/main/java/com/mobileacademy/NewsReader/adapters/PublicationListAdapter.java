@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.adapters;
+package com.mobileacademy.NewsReader.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobileacademy.newsReader.models.Publication;
-import com.mobileacademy.newsReader.R;
+import com.mobileacademy.NewsReader.models.Publication;
+import com.mobileacademy.NewsReader.R;
 
 import java.util.ArrayList;
 

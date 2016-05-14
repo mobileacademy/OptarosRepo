@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader;
+package com.mobileacademy.NewsReader;
 
 import org.junit.Test;
 

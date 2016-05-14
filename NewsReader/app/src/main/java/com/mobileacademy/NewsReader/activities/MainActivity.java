@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.activities;
+package com.mobileacademy.NewsReader.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,16 +34,16 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.mobileacademy.newsReader.data.CachedData;
-import com.mobileacademy.newsReader.models.Publication;
-import com.mobileacademy.newsReader.R;
-import com.mobileacademy.newsReader.adapters.PublicationListAdapter;
-import com.mobileacademy.newsReader.services.ListPackagesService;
-import com.mobileacademy.newsReader.services.CounterService;
-import com.mobileacademy.newsReader.services.MyTaskService;
-import com.mobileacademy.newsReader.services.RegistrationGCMIntentService;
-import com.mobileacademy.newsReader.utils.AppSharedPref;
-import com.mobileacademy.newsReader.utils.NotifUtils;
+import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.models.Publication;
+import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.NewsReader.services.ListPackagesService;
+import com.mobileacademy.NewsReader.services.CounterService;
+import com.mobileacademy.NewsReader.services.MyTaskService;
+import com.mobileacademy.NewsReader.services.RegistrationGCMIntentService;
+import com.mobileacademy.NewsReader.utils.AppSharedPref;
+import com.mobileacademy.NewsReader.utils.NotifUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

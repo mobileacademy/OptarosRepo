@@ -1,10 +1,10 @@
-package com.mobileacademy.newsReader;
+package com.mobileacademy.NewsReader;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.mobileacademy.newsReader.data.CachedData;
-import com.mobileacademy.newsReader.database.ArticlesDataSource;
+import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.database.ArticlesDataSource;
 
 /**
  * Created by Valerica Plesu on 4/23/2016.

@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.database;
+package com.mobileacademy.NewsReader.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

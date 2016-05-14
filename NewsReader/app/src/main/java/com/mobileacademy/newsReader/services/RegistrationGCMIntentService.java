@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mobileacademy.newsReader.services;
+package com.mobileacademy.NewsReader.services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-import com.mobileacademy.newsReader.R;
+import com.mobileacademy.NewsReader.R;
 
 public class RegistrationGCMIntentService extends IntentService {
 

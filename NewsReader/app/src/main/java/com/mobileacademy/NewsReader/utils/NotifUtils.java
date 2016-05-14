@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.utils;
+package com.mobileacademy.NewsReader.utils;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,8 +10,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
-import com.mobileacademy.newsReader.R;
-import com.mobileacademy.newsReader.activities.MainActivity;
+import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.activities.MainActivity;
 
 /**
  * Created by Valerica Plesu on 4/22/2016.

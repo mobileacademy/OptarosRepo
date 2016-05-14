@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.activities;
+package com.mobileacademy.NewsReader.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mobileacademy.newsReader.NewsReaderApplication;
-import com.mobileacademy.newsReader.R;
+import com.mobileacademy.NewsReader.NewsReaderApplication;
+import com.mobileacademy.NewsReader.R;
 
 import java.util.ArrayList;
 

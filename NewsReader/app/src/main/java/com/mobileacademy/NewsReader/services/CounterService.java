@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.services;
+package com.mobileacademy.NewsReader.services;
 
 
 import android.app.Service;
@@ -9,7 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mobileacademy.newsReader.activities.MainActivity;
+import com.mobileacademy.NewsReader.activities.MainActivity;
 
 /**
  * Created by cornelbalaban on 29/03/16.

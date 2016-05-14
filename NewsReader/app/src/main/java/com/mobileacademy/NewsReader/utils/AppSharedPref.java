@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.utils;
+package com.mobileacademy.NewsReader.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

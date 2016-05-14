@@ -1,4 +1,4 @@
-package com.mobileacademy.newsReader.database;
+package com.mobileacademy.NewsReader.database;
 
 /**
  * Created by Valerica Plesu on 4/23/2016.
@@ -13,7 +13,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mobileacademy.newsReader.models.Article;
+import com.mobileacademy.NewsReader.models.Article;
 
 public class ArticlesDataSource {
 
