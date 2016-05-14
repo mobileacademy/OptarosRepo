@@ -33,8 +33,21 @@ public class AppSharedPref {
         editor.apply();
     }
 
+
+    public void saveLong(String key, long value) {
+        // get Editor object
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        // put values in editor
+        editor.putLong(key, value);
+        editor.commit();
+    }
+
     public String getValue(String key) {
         return sharedpreferences.getString(key, "");
+    }
+
+    public Long getLong(String key) {
+        return sharedpreferences.getLong(key, 0);
     }
 
 

@@ -2,15 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobileacademy.NewsReader">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".NewsReaderApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- activities -->
         <activity
             android:name="com.mobileacademy.NewsReader.activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +24,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.mobileacademy.NewsReader.activities.ArticleListActivity"></activity>
+
+        <activity
+            android:name=".activities.ArticleListActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- services -->
+        <service
+            android:name=".services.CounterService"
+            android:exported="false" />
+        <service
+            android:name=".services.ListPackagesService"
+            android:exported="false" />
+
+        <!-- receivers -->
+        <receiver android:name=".utils.NotificationPublisher" />
+        <receiver android:name=".receivers.PackageInstalledReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.WifiConnectedReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
