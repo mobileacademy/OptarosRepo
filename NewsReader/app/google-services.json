@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "57642977072",
+    "project_id": "newsreaderapp-54549"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57642977072:android:1db0039aeb55ba9a",
+        "android_client_info": {
+          "package_name": "com.mobileacademy.newsreader"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtxaaNqFWQ_6FrpKwTs0IxSV7JWi4sJNA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
