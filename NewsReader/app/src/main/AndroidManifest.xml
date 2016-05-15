@@ -4,12 +4,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
+    <!-- add permission for GCM communication -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <permission android:name="com.mobileacademy.permission.C2D_MESSAGE"
+    <permission android:name="com.mobileacademy.NewsReader.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.mobileacademy.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.mobileacademy.NewsReader.permission.C2D_MESSAGE" />
 
     <application
         android:name=".NewsReaderApplication"
