@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.mobileacademy.NewsReader.NewsReaderApplication;
 import com.mobileacademy.NewsReader.R;
-import com.mobileacademy.NewsReader.database.ArticlesDataSource;
 import com.mobileacademy.NewsReader.models.Article;
 import com.mobileacademy.NewsReader.models.Publication;
 

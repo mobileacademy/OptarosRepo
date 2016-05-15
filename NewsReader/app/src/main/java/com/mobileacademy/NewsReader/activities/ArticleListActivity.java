@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.mobileacademy.NewsReader.NewsReaderApplication;
 import com.mobileacademy.NewsReader.R;
-import com.mobileacademy.NewsReader.data.CachedData;
-import com.mobileacademy.NewsReader.models.Article;
 
 import java.util.ArrayList;
 
