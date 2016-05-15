@@ -3,9 +3,7 @@ package com.mobileacademy.NewsReader.utils;
 
 import java.io.IOException;
 
-import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -13,9 +11,9 @@ import okhttp3.Response;
 /**
  * Created by cornelbalaban on 06/04/16.
  */
-public class HackerNewsApi {
+public class HackerNewsAPI {
 
-    private static final String TAG = HackerNewsApi.class.getSimpleName();
+    private static final String TAG = HackerNewsAPI.class.getSimpleName();
 
     public static final String BASE_ENDPOINT = "https://hacker-news.firebaseio.com/v0/";
     public static final String TOP_STORIES_ENDPOINT = BASE_ENDPOINT + "topstories.json";

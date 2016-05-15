@@ -11,12 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.data.MockDataHandler;
 import com.mobileacademy.NewsReader.models.Article;
-import com.mobileacademy.NewsReader.utils.HackerNewsApi;
+import com.mobileacademy.NewsReader.utils.HackerNewsAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,11 +99,11 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
         switch (publicationName) {
             case MockDataHandler.HACKER_NEWS:
                 loadingDialog.show();
-                retrieveByUrl(HackerNewsApi.TOP_STORIES_ENDPOINT);
+                retrieveByUrl(HackerNewsAPI.TOP_STORIES_ENDPOINT);
                 return;
             case MockDataHandler.FAST_COMPANY:
                 loadingDialog.show();
-                retrieveByUrl(HackerNewsApi.NEW_STORIES_ENDPOINT);
+                retrieveByUrl(HackerNewsAPI.NEW_STORIES_ENDPOINT);
                 return;
             default:
                 return;
@@ -113,7 +112,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
 
     private void retrieveByUrl(String url) {
         try {
-            HackerNewsApi.retrieveStories(url, this);
+            HackerNewsAPI.retrieveStories(url, this);
         } catch (IOException e) {
             Log.e(TAG, "ERROR retrieve by url", e);
         }
@@ -167,8 +166,8 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
             JSONArray jsonArticlesArray = new JSONArray(ids[0]);
                 //take the first NO_OF_ARTICLES articles
                 for (int i = 0; i < Math.min(NO_OF_ARTICLES,jsonArticlesArray.length()); i++) {
-                    String articleURL = HackerNewsApi.getArticleById(jsonArticlesArray.getString(i));
-                    String articleString = HackerNewsApi.retrieveStories(articleURL);
+                    String articleURL = HackerNewsAPI.getArticleById(jsonArticlesArray.getString(i));
+                    String articleString = HackerNewsAPI.retrieveStories(articleURL);
                     if(articleString == null) continue;
                     JSONObject articleJson = new JSONObject(articleString);
                     articles.add(getNewsItemFromJSON(articleJson));
