@@ -43,8 +43,5 @@ public class ListPackagesService extends IntentService {
         for (ApplicationInfo app : listApp) {
             Log.i(TAG, app.packageName);
         }
-
-        stopSelf();
     }
-
 }
