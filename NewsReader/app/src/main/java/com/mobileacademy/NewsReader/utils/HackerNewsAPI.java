@@ -47,8 +47,13 @@ public class HackerNewsApi {
         Request getRequest = new Request.Builder()
                 .url(url)
                 .build();
-        Response getResponse = getInstance().newCall(getRequest).execute();
-        return getResponse.body().string();
+        Response response = getInstance().newCall(getRequest).execute();
+
+        if(response.isSuccessful()){
+            return response.body().string();
+        }else{
+            return null;
+        }
     }
 
     /**

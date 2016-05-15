@@ -1,5 +1,6 @@
 package com.mobileacademy.NewsReader.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -39,6 +40,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
     private int publicationId = 0;
 
     private ListView listView;
+    ProgressDialog loadingDialog;
 
     @Override
     /**
@@ -58,6 +60,12 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
             Log.d(TAG, "publicationId - " + publicationId);
 
             if (publicationId != -1) {
+
+                loadingDialog = new ProgressDialog(this);
+                loadingDialog.setCancelable(false);
+                loadingDialog.setMessage("Loading");
+
+
                 // get articles from db by publication id
                 //articleList = (ArrayList) NewsReaderApplication.getInstance().getDatasource().getAllArticlesByPublication(publicationId);
                 listView = (ListView) findViewById(R.id.lv_articles);
@@ -70,6 +78,12 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
             return;
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        loadingDialog.dismiss();
     }
 
     private void setupList(ArrayList<Article> articleList) {
@@ -85,9 +99,11 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
     private void loadArticlesFromServer(String publicationName) {
         switch (publicationName) {
             case MockDataHandler.HACKER_NEWS:
+                loadingDialog.show();
                 retrieveByUrl(HackerNewsApi.TOP_STORIES_ENDPOINT);
                 return;
             case MockDataHandler.FAST_COMPANY:
+                loadingDialog.show();
                 retrieveByUrl(HackerNewsApi.NEW_STORIES_ENDPOINT);
                 return;
             default:
@@ -130,6 +146,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onFailure(Call call, IOException e) {
         Log.e(TAG, "failed to retrieve data", e);
+        loadingDialog.dismiss();
         finish();
     }
 
@@ -144,14 +161,15 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
 
     private class LoadArticlesAsync extends AsyncTask<String, Void, ArrayList<Article>> {
 
-        protected ArrayList<Article> doInBackground(String... urls) {
+        protected ArrayList<Article> doInBackground(String... ids) {
             ArrayList<Article> articles = new ArrayList<>();
             try {
-            JSONArray jsonArticlesArray = new JSONArray(urls[0]);
+            JSONArray jsonArticlesArray = new JSONArray(ids[0]);
                 //take the first NO_OF_ARTICLES articles
-                for (int i = 0; i < NO_OF_ARTICLES; i++) {
+                for (int i = 0; i < Math.min(NO_OF_ARTICLES,jsonArticlesArray.length()); i++) {
                     String articleURL = HackerNewsApi.getArticleById(jsonArticlesArray.getString(i));
                     String articleString = HackerNewsApi.retrieveStories(articleURL);
+                    if(articleString == null) continue;
                     JSONObject articleJson = new JSONObject(articleString);
                     articles.add(getNewsItemFromJSON(articleJson));
                 }
@@ -165,6 +183,7 @@ public class ArticleListActivity extends AppCompatActivity implements AdapterVie
 
         protected void onPostExecute(ArrayList<Article> result) {
             setupList(result);
+            loadingDialog.dismiss();
         }
     }
 
