@@ -43,7 +43,7 @@ public class RegistrationGCMIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "@@ onHandleIntent");
+        Log.d(TAG, "onHandleIntent");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
@@ -95,6 +95,7 @@ public class RegistrationGCMIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
+        Log.d(TAG, "send gcm registration token to your server!");
     }
 
 }

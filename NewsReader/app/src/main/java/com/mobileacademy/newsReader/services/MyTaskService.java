@@ -56,7 +56,7 @@ public class MyTaskService extends GcmTaskService {
 
         String tag = taskParams.getTag();
 
-        Log.d(TAG, "@@@ do something here!");
+        Log.d(TAG, "do something here!");
 
         // Default result is success.
         int result = GcmNetworkManager.RESULT_SUCCESS;
