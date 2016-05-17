@@ -51,14 +51,14 @@ public class ArticlesDataSource {
         dbHelper.close();
     }
 
-    public Article createArticle(int id, String title, String time, String url, int publicationId) {
+    public void saveArticle(Article article) {
 
         ContentValues values = new ContentValues();
-        values.put(MyDatabaseHelper.ARTICLE_COLUMN_ID, id);
-        values.put(MyDatabaseHelper.ARTICLE_COLUMN_TITLE, title);
-        values.put(MyDatabaseHelper.ARTICLE_COLUMN_TIME, time);
-        values.put(MyDatabaseHelper.ARTICLE_COLUMN_URL, url);
-        values.put(MyDatabaseHelper.ARTICLE_PUBLICATION_ID, publicationId);
+        values.put(MyDatabaseHelper.ARTICLE_COLUMN_ID, article.getId());
+        values.put(MyDatabaseHelper.ARTICLE_COLUMN_TITLE, article.getName());
+        values.put(MyDatabaseHelper.ARTICLE_COLUMN_TIME, article.getTime());
+        values.put(MyDatabaseHelper.ARTICLE_COLUMN_URL, article.getUrl());
+        values.put(MyDatabaseHelper.ARTICLE_PUBLICATION_ID, article.getPublicationId());
 
 
         // insert or replace method
@@ -68,19 +68,14 @@ public class ArticlesDataSource {
 
         // query database
         Cursor cursor = database.query(MyDatabaseHelper.TABLE_ARTICLE,
-                allColumns, MyDatabaseHelper.ARTICLE_COLUMN_ID + " = " + id, null,
+                allColumns, MyDatabaseHelper.ARTICLE_COLUMN_ID + " = " + article.getId(), null,
                 null, null, null);
 
         // move cursor to the first row
         cursor.moveToFirst();
 
-
-        Article article = cursorToArticle(cursor);
-
         // !!!! close cursor
         cursor.close();
-
-        return article;
     }
 
     public void deleteArticle(Article article) {

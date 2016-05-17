@@ -43,6 +43,9 @@
         <service
             android:name=".services.ListPackagesService"
             android:exported="false" />
+        <service
+            android:name=".services.FetchArticlesService"
+            android:exported="false" />
 
         <!-- which enables various aspects of handling messages such as detecting different downstream message types,
         determining upstream send status, and automatically displaying simple notifications on the app’s behalf. -->
