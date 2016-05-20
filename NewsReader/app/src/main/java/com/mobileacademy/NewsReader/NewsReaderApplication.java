@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.mobileacademy.NewsReader.database.ArticlesDataSource;
 import com.mobileacademy.NewsReader.services.FetchArticlesService;
+import com.mobileacademy.NewsReader.utils.LocationUtils;
 
 /**
  * Created by Valerica Plesu on 4/23/2016.
@@ -31,6 +32,7 @@ public class NewsReaderApplication extends Application {
 
         Intent service = new Intent(this, FetchArticlesService.class);
         this.startService(service);
+        LocationUtils.registerForLocationUpdates(this);
 
         // create database (create Articles table)
         datasource = new ArticlesDataSource(this);

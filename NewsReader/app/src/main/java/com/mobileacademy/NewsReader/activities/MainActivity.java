@@ -281,6 +281,7 @@ public class MainActivity extends AppCompatActivity
             this.startService(service);
 
         } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(this, MapsActivity.class));
 
         } else if (id == R.id.nav_manage) {
 
