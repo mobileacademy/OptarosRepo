@@ -15,10 +15,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 @SuppressWarnings({"MissingPermission"})
 public class LocationUtils {
-
+    private static final String TAG = "LocationUtils";
     private static String LOCATION_UPDATE_BROADCAST = "com.mobileacademy.newsreader.LOCATION_UPDATE";
 
-    public static void registerForLocationUpdates(Context context){
+    public static void registerForLocationUpdates(Context context) {
         long minTime = 1000; //ms
         float minDistance = 50; //m
         String provider;   //GPS_PROVIDER or NETWORK_PROVIDER
@@ -34,7 +34,7 @@ public class LocationUtils {
         manager.requestLocationUpdates(provider, minTime, minDistance, launchIntent);
     }
 
-    public static LatLng getCurrentLocation(Context context){
+    public static LatLng getCurrentLocation(Context context) {
         LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         //use the default criteria on how to get the location
@@ -42,12 +42,12 @@ public class LocationUtils {
         //accuracy, power usage, ability to report altitude, speed, and bearing, and monetary cost.
         Criteria criteria = new Criteria();
         String provider = manager.getBestProvider(criteria, false);
-        Location location =  manager.getLastKnownLocation(provider);
+        Location location = manager.getLastKnownLocation(provider);
 
 
-        if(location!=null) {
+        if (location != null) {
             return new LatLng(location.getLatitude(), location.getLongitude());
-        }else {
+        } else {
             return null;
         }
     }

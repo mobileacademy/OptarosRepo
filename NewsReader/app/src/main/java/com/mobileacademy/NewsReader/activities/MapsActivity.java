@@ -3,10 +3,16 @@ package com.mobileacademy.NewsReader.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,15 +20,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.utils.LocationUtils;
 import com.mobileacademy.NewsReader.utils.PermissionUtils;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "MapsActivity";
     private static int DEFAULT_ZOOM_VALUE = 15;
     private GoogleMap mMap;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(isLocationPermissionsGranted()){
+        if (isLocationPermissionsGranted()) {
             gotoCurrentLocation();
         }
     }
@@ -73,9 +87,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void gotoCurrentLocation() {
         // Add a marker in the current location and move the camera
         LatLng currentLocation = LocationUtils.getCurrentLocation(this);
+
+        //for testing purposes in emulator, blv Magheru
+        currentLocation = currentLocation == null ? new LatLng(44.442606, 26.098843) : currentLocation;
+
         if (currentLocation != null) {
-            mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location"));
+            marker = mMap.addMarker(new MarkerOptions().position(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM_VALUE));
+
+            new GetAddressFromLatLongAsync().execute(currentLocation);
         } else {
             Toast.makeText(this, "Unable to get your location", Toast.LENGTH_SHORT).show();
         }
@@ -89,6 +109,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 gotoCurrentLocation();
             }
+        }
+    }
+
+    private class GetAddressFromLatLongAsync extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected String doInBackground(LatLng... params) {
+            Geocoder geocoder = new Geocoder(MapsActivity.this);
+            LatLng latLng = params[0];
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+
+                    Address address = addresses.get(0);
+                    ArrayList<String> addressFragments = new ArrayList<String>();
+
+                    // Fetch the address chunks
+                    for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                        addressFragments.add(address.getAddressLine(i));
+                    }
+
+                    String addressString = TextUtils.join(System.getProperty("line.separator"),
+                            addressFragments);
+                    Log.d(TAG, "latLngToAddress: " + address.getMaxAddressLineIndex() + ":" + addressString);
+                    return addressString;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String address) {
+            marker.setTitle(address);
         }
     }
 }
