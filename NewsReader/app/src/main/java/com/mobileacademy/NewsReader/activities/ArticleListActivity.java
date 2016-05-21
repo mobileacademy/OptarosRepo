@@ -1,19 +1,21 @@
 package com.mobileacademy.NewsReader.activities;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.mobileacademy.NewsReader.R;
-import com.mobileacademy.NewsReader.data.MockDataHandler;
 import com.mobileacademy.NewsReader.fragments.NewStoriesArticleFragment;
 import com.mobileacademy.NewsReader.fragments.TopStoriesArticleFragment;
 import com.mobileacademy.NewsReader.models.Article;
@@ -24,12 +26,9 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
     public static String TAG = ArticleListActivity.class.getSimpleName();
     public static String PUBLICATION_EXTRA = "publication_extra";
     public static String PUBLICATION_ID_EXTRA = "publication_id_extra";
-    private static String NAME_EXTRA = "name";
-    private static String ARTICLE_FRAGMENT_TAG = "article_tag";
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-    private FragmentManager mFragmentManager;
 
     private int publicationId = 0;
 
@@ -42,10 +41,35 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_main);
 
-        mFragmentManager = getSupportFragmentManager();
         mPager = (ViewPager) findViewById(R.id.vpPager);
-        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Top Stories"));
+        tabLayout.addTab(tabLayout.newTab().setText("New Stories"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         mPager.setAdapter(mPagerAdapter);
+        mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
         // Attach the page change listener inside the activity
@@ -81,23 +105,19 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
 
 //            if (publicationId != -1) {
 //                TopStoriesArticleFragment topStoriesArticleFragment;
-//                Bundle args = new Bundle();
-//
-//                if(fragmentManager.findFragmentByTag(ARTICLE_FRAGMENT_TAG) == null) {
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                if(fragmentManager.findFragmentByTag("top_stories_tag") == null) {
 //                    topStoriesArticleFragment = new TopStoriesArticleFragment();
 //                } else {
-//                    topStoriesArticleFragment = (TopStoriesArticleFragment) fragmentManager.findFragmentByTag(ARTICLE_FRAGMENT_TAG);
+//                    topStoriesArticleFragment = (TopStoriesArticleFragment) fragmentManager.findFragmentByTag("top_stories_tag");
 //                }
-//                args.putString(NAME_EXTRA, publicationName);
-//                topStoriesArticleFragment.setArguments(args);
-//
 //                // Replace whatever is in the fragment_container view with this fragment,
 //                // and add the transaction to the back stack
-//                fragmentTransaction.replace(R.id.fragment_container, topStoriesArticleFragment, ARTICLE_FRAGMENT_TAG);
+//                fragmentTransaction.replace(R.id.fragment_container, topStoriesArticleFragment, "top_stories_tag");
 //                fragmentTransaction.addToBackStack(null);
 //
 //                fragmentTransaction.commit();
-//
 //            }
         } else {
             Log.e(TAG, "The publication id && publication name should have been passed in the intent");
@@ -128,16 +148,17 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
+        private int tabs;
 
-        public MyPagerAdapter(FragmentManager fragmentManager) {
+        public MyPagerAdapter(FragmentManager fragmentManager, int NumOfTabs) {
             super(fragmentManager);
+            tabs = NumOfTabs;
         }
 
         // Returns total number of pages
         @Override
         public int getCount() {
-            return NUM_ITEMS;
+            return tabs;
         }
 
         // Returns the fragment to display for that page
