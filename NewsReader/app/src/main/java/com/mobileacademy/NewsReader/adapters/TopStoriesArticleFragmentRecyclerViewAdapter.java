@@ -1,4 +1,4 @@
-package com.mobileacademy.NewsReader.fragments;
+package com.mobileacademy.NewsReader.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.fragments.TopStoriesArticleFragment;
 import com.mobileacademy.NewsReader.models.Article;
 
 import java.text.SimpleDateFormat;
@@ -18,12 +19,12 @@ import java.util.Locale;
  * {@link RecyclerView.Adapter} that can display a {@link Article} and makes a call to the
  * specified
  */
-public class MyArticleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<MyArticleFragmentRecyclerViewAdapter.ViewHolder> {
+public class TopStoriesArticleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<TopStoriesArticleFragmentRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Article> mValues;
-    private final ArticleFragment.OnListFragmentInteractionListener mListener;
+    private final TopStoriesArticleFragment.OnListFragmentInteractionListener mListener;
 
-    public MyArticleFragmentRecyclerViewAdapter(ArrayList<Article> items, ArticleFragment.OnListFragmentInteractionListener listener) {
+    public TopStoriesArticleFragmentRecyclerViewAdapter(ArrayList<Article> items, TopStoriesArticleFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -62,7 +63,7 @@ public class MyArticleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<M
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentArticleSelected(holder.mItem);
+                    mListener.onTopStoryArticleSelected(holder.mItem);
                 }
             }
         });

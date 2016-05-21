@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.adapters.TopStoriesArticleFragmentRecyclerViewAdapter;
 import com.mobileacademy.NewsReader.data.MockDataHandler;
 import com.mobileacademy.NewsReader.models.Article;
 import com.mobileacademy.NewsReader.utils.HackerNewsAPI;
@@ -34,16 +35,15 @@ import okhttp3.Response;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ArticleFragment extends Fragment implements Callback {
+public class TopStoriesArticleFragment extends Fragment implements Callback {
 
-    private static final String TAG = ArticleFragment.class.getSimpleName();
+    private static final String TAG = TopStoriesArticleFragment.class.getSimpleName();
     private static final int NO_OF_ARTICLES = 20;
     public static final String NAME = "name";
 
     private OnListFragmentInteractionListener mListener;
-    private MyArticleFragmentRecyclerViewAdapter mAdapter;
+    private TopStoriesArticleFragmentRecyclerViewAdapter mAdapter;
     private ArrayList<Article> mArticleList = new ArrayList<>();
-    private String mPublication;
 
     private ProgressDialog loadingDialog;
 
@@ -52,18 +52,17 @@ public class ArticleFragment extends Fragment implements Callback {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ArticleFragment() {
+    public TopStoriesArticleFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ArticleFragment newInstance(String publication) {
-        ArticleFragment fragment = new ArticleFragment();
+    public static TopStoriesArticleFragment newInstance() {
+        TopStoriesArticleFragment fragment = new TopStoriesArticleFragment();
 
         // set arguments if needed
-        Bundle args = new Bundle();
-        args.putString(NAME, publication);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -73,18 +72,15 @@ public class ArticleFragment extends Fragment implements Callback {
 
         //get arguments
         Bundle args = getArguments();
-        if (args != null && args.containsKey(NAME)) {
-            mPublication = args.getString(NAME);
-        }
 
         loadingDialog = new ProgressDialog(getActivity());
         loadingDialog.setCancelable(false);
         loadingDialog.setMessage("Loading");
 
-        mAdapter = new MyArticleFragmentRecyclerViewAdapter(mArticleList, mListener);
+        mAdapter = new TopStoriesArticleFragmentRecyclerViewAdapter(mArticleList, mListener);
 
         showDialog();
-        loadArticlesFromServer(mPublication);
+        loadArticlesFromServer();
     }
 
     @Override
@@ -108,7 +104,7 @@ public class ArticleFragment extends Fragment implements Callback {
         super.onResume();
         if(mArticleList != null && mArticleList.size() > 0) {
             showDialog();
-            loadArticlesFromServer(mPublication);
+            loadArticlesFromServer();
         }
     }
 
@@ -146,7 +142,7 @@ public class ArticleFragment extends Fragment implements Callback {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentArticleSelected(Article item);
+        void onTopStoryArticleSelected(Article item);
     }
 
     @Override
@@ -164,19 +160,9 @@ public class ArticleFragment extends Fragment implements Callback {
 
     }
 
-    private void loadArticlesFromServer(String publicationName) {
-        switch (publicationName) {
-            case MockDataHandler.HACKER_NEWS:
-                loadingDialog.show();
-                retrieveByUrl(HackerNewsAPI.TOP_STORIES_ENDPOINT);
-                return;
-            case MockDataHandler.FAST_COMPANY:
-                loadingDialog.show();
-                retrieveByUrl(HackerNewsAPI.NEW_STORIES_ENDPOINT);
-                return;
-            default:
-                return;
-        }
+    private void loadArticlesFromServer() {
+        loadingDialog.show();
+        retrieveByUrl(HackerNewsAPI.TOP_STORIES_ENDPOINT);
     }
 
     private void retrieveByUrl(String url) {
