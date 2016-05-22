@@ -48,7 +48,7 @@ public class NewStoriesArticleFragment extends Fragment implements Callback {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
+     * fragment from layouts (e.g. upon screen orientation changes).
      */
     public NewStoriesArticleFragment() {
     }

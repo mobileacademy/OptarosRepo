@@ -154,13 +154,11 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
             super(fragmentManager);
             tabs = NumOfTabs;
         }
-
         // Returns total number of pages
         @Override
         public int getCount() {
             return tabs;
         }
-
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
@@ -173,7 +171,6 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
                     return null;
             }
         }
-
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
@@ -188,6 +185,5 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
             }
             return title;
         }
-
     }
 }
