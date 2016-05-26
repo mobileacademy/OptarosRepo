@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.mobileacademy.NewsReader.data.MockDataHandler;
+import com.mobileacademy.NewsReader.data.CachedData;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
 //        addProgramaticalyItemsToDrawerView();
 
 
-        list = MockDataHandler.getInstance().getPublicationsAsList();
+        list = CachedData.getInstance().getPublicationsAsList();
 
         IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(countDownReceiver, intentFilter);
@@ -281,6 +281,7 @@ public class MainActivity extends AppCompatActivity
             this.startService(service);
 
         } else if (id == R.id.nav_slideshow) {
+           // startActivity(new Intent(this, MapsActivity.class));
 
         } else if (id == R.id.nav_manage) {
 

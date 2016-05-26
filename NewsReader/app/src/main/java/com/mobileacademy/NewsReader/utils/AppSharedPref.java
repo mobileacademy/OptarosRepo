@@ -18,7 +18,7 @@ public class AppSharedPref {
         sharedpreferences = context.getSharedPreferences(MyPrefName, Context.MODE_PRIVATE);
     }
 
-    public void addStringToSharePref(String key, String value) {
+    public void setString(String key, String value) {
         // get Editor object
         SharedPreferences.Editor editor = sharedpreferences.edit();
         // put values in editor
@@ -34,7 +34,7 @@ public class AppSharedPref {
     }
 
 
-    public void saveLong(String key, long value) {
+    public void setLong(String key, long value) {
         // get Editor object
         SharedPreferences.Editor editor = sharedpreferences.edit();
         // put values in editor
@@ -42,7 +42,19 @@ public class AppSharedPref {
         editor.commit();
     }
 
-    public String getValue(String key) {
+    public void setBoolean(String key, boolean isTrue) {
+        // get Editor object
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        // put values in editor
+        editor.putBoolean(key, isTrue);
+        editor.commit();
+    }
+
+    public boolean getBoolean(String key) {
+        return sharedpreferences.getBoolean(key, false);
+    }
+
+    public String getString(String key) {
         return sharedpreferences.getString(key, "");
     }
 
