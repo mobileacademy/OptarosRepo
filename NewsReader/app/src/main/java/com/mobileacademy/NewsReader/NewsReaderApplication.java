@@ -29,9 +29,6 @@ public class NewsReaderApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-
-        Intent service = new Intent(this, FetchArticlesService.class);
-        this.startService(service);
         LocationUtils.registerForLocationUpdates(this);
 
         // create database (create Articles table)

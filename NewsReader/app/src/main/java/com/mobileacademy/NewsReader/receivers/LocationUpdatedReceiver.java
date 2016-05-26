@@ -14,6 +14,8 @@ public class LocationUpdatedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Location location = intent.getExtras().getParcelable("location");
 
-        Log.d(TAG, "onReceive:" + location.getLatitude() + " / " + location.getLongitude());
+        if (location != null) {
+            Log.d(TAG, "onReceive:" + location.getLatitude() + " / " + location.getLongitude());
+        }
     }
 }
