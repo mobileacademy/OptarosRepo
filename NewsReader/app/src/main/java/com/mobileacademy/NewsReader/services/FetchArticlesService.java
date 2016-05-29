@@ -6,9 +6,11 @@ import android.util.Log;
 
 import com.mobileacademy.NewsReader.NewsReaderApplication;
 import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.events.NewArticlesEvent;
 import com.mobileacademy.NewsReader.models.Article;
 import com.mobileacademy.NewsReader.utils.HackerNewsAPI;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +44,8 @@ public class FetchArticlesService extends IntentService {
 
             saveToDb(CachedData.HACKER_NEWS_ID, topStoriesList);
             saveToDb(CachedData.FAST_COMPANY_ID, newStoriesList);
+
+            EventBus.getDefault().post(new NewArticlesEvent());
 
         } catch (IOException e) {
             e.printStackTrace();

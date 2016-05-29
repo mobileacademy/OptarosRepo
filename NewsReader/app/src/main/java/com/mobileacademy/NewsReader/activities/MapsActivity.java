@@ -2,6 +2,7 @@ package com.mobileacademy.NewsReader.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,10 +24,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.events.NewArticlesEvent;
+import com.mobileacademy.NewsReader.services.FetchArticlesService;
 import com.mobileacademy.NewsReader.utils.LocationUtils;
 import com.mobileacademy.NewsReader.utils.PermissionUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +50,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //TODO: @Daniela delete
+        startService(new Intent(this, FetchArticlesService.class));
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,7 +71,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
+    }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void doOnMainThread(NewArticlesEvent event) {
+        marker.setTitle("New articles! Yay!");
     }
 
     public boolean isLocationPermissionsGranted() {
@@ -95,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker = mMap.addMarker(new MarkerOptions().position(currentLocation));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM_VALUE));
 
-            new GetAddressFromLatLongAsync().execute(currentLocation);
+            new GetAddressFromLatLongAsync(this).execute(currentLocation);
         } else {
             Toast.makeText(this, "Unable to get your location", Toast.LENGTH_SHORT).show();
         }
@@ -114,9 +144,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private class GetAddressFromLatLongAsync extends AsyncTask<LatLng, Void, String> {
 
+        WeakReference<MapsActivity> activityReference;
+
+        public GetAddressFromLatLongAsync(MapsActivity activity) {
+            activityReference = new WeakReference(activity);
+        }
+
         @Override
         protected String doInBackground(LatLng... params) {
-            Geocoder geocoder = new Geocoder(MapsActivity.this);
+
+            if (activityReference == null || activityReference.get() == null) {
+                return null;
+            }
+
+            MapsActivity activity = activityReference.get();
+
+            Geocoder geocoder = new Geocoder(activity);
             LatLng latLng = params[0];
             try {
                 List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -145,7 +188,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected void onPostExecute(String address) {
-            marker.setTitle(address);
+            if (activityReference == null && activityReference.get() == null) {
+                return;
+            }
+            MapsActivity activity = activityReference.get();
+            activity.marker.setTitle(address);
         }
     }
 }
