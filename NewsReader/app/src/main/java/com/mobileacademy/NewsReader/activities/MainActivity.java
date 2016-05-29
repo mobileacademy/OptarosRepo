@@ -35,6 +35,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.events.NewArticlesEvent;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
@@ -44,6 +45,10 @@ import com.mobileacademy.NewsReader.services.MyTaskService;
 import com.mobileacademy.NewsReader.services.RegistrationGCMIntentService;
 import com.mobileacademy.NewsReader.utils.AppSharedPref;
 import com.mobileacademy.NewsReader.utils.NotifUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,15 +198,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void doOnMainThread(NewArticlesEvent event) {
+        //TODO: refresh article list
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 
     @Override
@@ -281,7 +299,7 @@ public class MainActivity extends AppCompatActivity
             this.startService(service);
 
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(this, MapsActivity.class));
+           // startActivity(new Intent(this, MapsActivity.class));
 
         } else if (id == R.id.nav_manage) {
 

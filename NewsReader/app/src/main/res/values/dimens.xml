@@ -10,4 +10,5 @@
     <dimen name="publication_pic_size">160dp</dimen>
 
     <dimen name="user_picture_size">48dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
