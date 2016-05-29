@@ -4,12 +4,23 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- add permission for GCM communication -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <permission android:name="com.mobileacademy.NewsReader.permission.C2D_MESSAGE"
+
+    <permission
+        android:name="com.mobileacademy.NewsReader.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.mobileacademy.NewsReader.permission.C2D_MESSAGE" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".NewsReaderApplication"
@@ -31,7 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.ArticleListActivity"
             android:screenOrientation="portrait" />
@@ -43,12 +53,17 @@
         <service
             android:name=".services.ListPackagesService"
             android:exported="false" />
+        <service
+            android:name=".services.FetchArticlesService"
+            android:exported="false" />
 
-        <!-- which enables various aspects of handling messages such as detecting different downstream message types,
-        determining upstream send status, and automatically displaying simple notifications on the app’s behalf. -->
+        <!--
+        which enables various aspects of handling messages such as detecting different downstream message types,
+        determining upstream send status, and automatically displaying simple notifications on the app’s behalf.
+        -->
         <service
             android:name=".services.MyGcmListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -63,22 +78,33 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receivers.WifiConnectedReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".receivers.LocationUpdatedReceiver"
+            android:enabled="true"
+            android:exported="false">
 
-        <!-- A declaration of GcmReceiver, which handles messages sent from GCM to your application.
-         Because this service needs permission to receive messages from GCM,-->
+            <intent-filter>
+                <action android:name="com.mobileacademy.newsreader.LOCATION_UPDATE"/>
+            </intent-filter>
+        </receiver>
+
+        <!--
+         A declaration of GcmReceiver, which handles messages sent from GCM to your application.
+         Because this service needs permission to receive messages from GCM,
+        -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
@@ -91,12 +117,9 @@
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.RegistrationGCMIntentService"
-            android:exported="false">
-        </service>
-
+            android:exported="false" />
         <service
             android:name=".services.MyTaskService"
             android:exported="true"

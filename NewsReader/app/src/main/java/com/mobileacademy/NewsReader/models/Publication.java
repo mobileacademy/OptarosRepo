@@ -14,11 +14,16 @@ public class Publication implements Serializable {
     private ArrayList<Article> articleList;
 
     public Publication(int id, String name, int pictureResource) {
+        this(id, name, pictureResource, null);
+    }
+
+    public Publication(int id, String name, int pictureResource, ArrayList<Article> articleList) {
         this.id = id;
         this.name = name;
         this.pictureResource = pictureResource;
-
+        this.articleList = articleList;
     }
+
 
     public ArrayList<Article> getArticleList() {
         return articleList;

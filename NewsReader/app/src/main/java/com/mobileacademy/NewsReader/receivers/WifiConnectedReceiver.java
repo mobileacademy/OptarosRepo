@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.mobileacademy.NewsReader.services.FetchArticlesService;
 import com.mobileacademy.NewsReader.utils.AppSharedPref;
 
 /**
@@ -30,8 +31,10 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
             long lastUpdate = sharedPrefs.getLong(LAST_UPDATE);
             long currentTime = System.currentTimeMillis();
             if(currentTime - lastUpdate >=UPDATE_SEQUENCE) {
-                sharedPrefs.saveLong(LAST_UPDATE, currentTime);
+                sharedPrefs.setLong(LAST_UPDATE, currentTime);
                 Log.d(TAG, "onReceive: ");
+
+                context.startService(new Intent(context, FetchArticlesService.class));
 
 
                 //todo: retrieve articles once a day

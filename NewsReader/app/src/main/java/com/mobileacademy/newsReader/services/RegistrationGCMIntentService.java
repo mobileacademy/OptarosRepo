@@ -68,7 +68,7 @@ public class RegistrationGCMIntentService extends IntentService {
             sendRegistrationToServer(token);
 
             // You should store a boolean that indicates whether the generated token has been
-            // sent to your server. If the boolean is false, send the token to your server,
+            // sent to your server. If the boolean is false, send the token to yourGoo server,
             // otherwise your server should have already received the token.
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
 
