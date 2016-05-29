@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.TopStoriesArticleFragmentRecyclerViewAdapter;
-import com.mobileacademy.NewsReader.data.MockDataHandler;
 import com.mobileacademy.NewsReader.models.Article;
 import com.mobileacademy.NewsReader.utils.HackerNewsAPI;
 
