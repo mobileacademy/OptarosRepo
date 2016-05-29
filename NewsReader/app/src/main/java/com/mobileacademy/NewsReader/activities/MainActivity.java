@@ -39,6 +39,7 @@ import com.mobileacademy.NewsReader.events.NewArticlesEvent;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.NewsReader.services.FetchArticlesService;
 import com.mobileacademy.NewsReader.services.ListPackagesService;
 import com.mobileacademy.NewsReader.services.CounterService;
 import com.mobileacademy.NewsReader.services.MyTaskService;
@@ -195,26 +196,18 @@ public class MainActivity extends AppCompatActivity
 
         MyTaskService.startChargingTask(this);
 
+        //TODO: delete - used for test purposes
+        startService(new Intent(this, FetchArticlesService.class));
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
-        EventBus.getDefault().unregister(this);
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void doOnMainThread(NewArticlesEvent event) {
-        //TODO: refresh article list
-    }
 
     @Override
     protected void onResume() {
