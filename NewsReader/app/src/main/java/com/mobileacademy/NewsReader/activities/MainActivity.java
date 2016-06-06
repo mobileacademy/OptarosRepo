@@ -35,15 +35,21 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.mobileacademy.NewsReader.data.CachedData;
+import com.mobileacademy.NewsReader.events.NewArticlesEvent;
 import com.mobileacademy.NewsReader.models.Publication;
 import com.mobileacademy.NewsReader.R;
 import com.mobileacademy.NewsReader.adapters.PublicationListAdapter;
+import com.mobileacademy.NewsReader.services.FetchArticlesService;
 import com.mobileacademy.NewsReader.services.ListPackagesService;
 import com.mobileacademy.NewsReader.services.CounterService;
 import com.mobileacademy.NewsReader.services.MyTaskService;
 import com.mobileacademy.NewsReader.services.RegistrationGCMIntentService;
 import com.mobileacademy.NewsReader.utils.AppSharedPref;
 import com.mobileacademy.NewsReader.utils.NotifUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -190,18 +196,23 @@ public class MainActivity extends AppCompatActivity
 
         MyTaskService.startChargingTask(this);
 
+        //TODO: delete - used for test purposes
+        startService(new Intent(this, FetchArticlesService.class));
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 
     @Override

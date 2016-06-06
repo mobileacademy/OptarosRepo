@@ -39,7 +39,6 @@ public class NewsReaderApplication extends Application {
 
     }
 
-
     public ArticlesDataSource getDatasource() {
         return datasource;
     }

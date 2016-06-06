@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +17,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mobileacademy.NewsReader.R;
+import com.mobileacademy.NewsReader.events.NewArticlesEvent;
 import com.mobileacademy.NewsReader.fragments.NewStoriesArticleFragment;
 import com.mobileacademy.NewsReader.fragments.TopStoriesArticleFragment;
 import com.mobileacademy.NewsReader.models.Article;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class ArticleListActivity extends AppCompatActivity implements TopStoriesArticleFragment.OnListFragmentInteractionListener,
         NewStoriesArticleFragment.OnListFragmentInteractionListener {
@@ -127,6 +133,25 @@ public class ArticleListActivity extends AppCompatActivity implements TopStories
         }
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void doOnMainThread(NewArticlesEvent event) {
+        Log.d(TAG, "New articles available");
+    }
+
 
     @Override
     protected void onPause() {

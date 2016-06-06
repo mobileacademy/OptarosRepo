@@ -35,9 +35,6 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
                 Log.d(TAG, "onReceive: ");
 
                 context.startService(new Intent(context, FetchArticlesService.class));
-
-
-                //todo: retrieve articles once a day
             }
         }
     }
